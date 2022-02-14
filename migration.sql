@@ -28,4 +28,3 @@ CREATE TABLE categories (
 );
 
 -- TODO: create many to many table that links categories to ads
-
