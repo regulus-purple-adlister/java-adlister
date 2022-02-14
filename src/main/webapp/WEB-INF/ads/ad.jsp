@@ -8,10 +8,14 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
-<section class="container">
-    <div class="ad-title">AD TITLE</div>
-    <div class="ad-descr">AD DESCRIPTION</div>
-    <div class="ad-poster">AD POSTER</div>
-</section>
+<div class="container">
+    <h1><c:out value="${ad.title}" /></h1>
+    <p><c:out value="${ad.description}" /></p>
+    <p><c:out value="${ad.userId}" /></p>
+</div>
+<div class="container">
+    <button type="button" class="btn btn-primary">Update listing</button>
+    <button type="button" class="btn btn-danger">Delete listing</button>
+</div>
 </body>
 </html>
