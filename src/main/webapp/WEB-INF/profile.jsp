@@ -16,5 +16,6 @@
         <h2>User created ads:</h2>
         <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
     </div>
+    <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>

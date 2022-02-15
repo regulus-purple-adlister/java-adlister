@@ -14,5 +14,6 @@
 
     <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
 </div>
+<jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>
