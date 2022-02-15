@@ -5,8 +5,12 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navToggle">
-        <form class="form-inline my-2 my-lg-auto ml-lg-auto mr-2" method="get" action="/search">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search ads" aria-label="Search">
+        <form class="form-inline my-2 my-lg-auto ml-lg-auto mr-2" method="post" action="/search/">
+            <input class="form-control mr-sm-2" type="search" name="search" id="search-text" placeholder="Search ads" aria-label="Search">
+            <select class="form-control mr-sm-2" id="search-type" name="type">
+                <option value="title" selected>Ads by title</option>
+                <option value="user">Ads by user</option>
+            </select>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav ml-2 mr-2 mt-2 mt-lg-0">
