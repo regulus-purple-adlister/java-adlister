@@ -36,7 +36,7 @@ public class MySQLUsersDao implements Users {
     }
 
     @Override
-    public Long insert(User user) {
+    public Long insert(User user) throws SQLIntegrityConstraintViolationException {
         String query = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -48,7 +48,11 @@ public class MySQLUsersDao implements Users {
             rs.next();
             return rs.getLong(1);
         } catch (SQLException e) {
-            throw new RuntimeException("Error creating new user", e);
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                throw new SQLIntegrityConstraintViolationException("User already exists", e);
+            } else {
+                throw new RuntimeException("Error creating new user", e);
+            }
         }
     }
 
