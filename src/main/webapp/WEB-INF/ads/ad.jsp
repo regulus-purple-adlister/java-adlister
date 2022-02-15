@@ -11,6 +11,7 @@
 <div class="container">
     <h1><c:out value="${ad.title}" /></h1>
     <p><c:out value="${ad.description}" /></p>
+<%--    <p><c:out value="${ad.category}" /></p>--%>
     <p><c:out value="${ad.userId}" /></p>
 </div>
 <div class="container">
