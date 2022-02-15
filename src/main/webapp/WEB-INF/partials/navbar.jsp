@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navToggle">
-        <form class="form-inline my-2 my-lg-auto ml-lg-auto mr-2" method="post" action="/search/">
+        <form class="form-inline my-2 my-lg-auto ml-lg-auto mr-2" method="get" action="/search/">
             <input class="form-control mr-sm-2" type="search" name="search" id="search-text" placeholder="Search ads" aria-label="Search">
             <select class="form-control mr-sm-2" id="search-type" name="type">
                 <option value="title" selected>Ads by title</option>
