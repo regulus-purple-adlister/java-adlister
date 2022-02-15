@@ -37,18 +37,23 @@ public class MySQLCategoriesDao implements Categories {
 
     @Override
     public Long insert(Category category) {
-        try {
-            String insertQuery = "INSERT INTO categories(id, name) VALUES (?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, category.getId());
-            stmt.setString(2, category.getName());
+        // check if category already exists before adding a new one
+        Category catExisting = findByCategory(category.getName());
+        if (catExisting.getName() != null) {
+            return catExisting.getId();
+        } else {
+            try {
+                String insertQuery = "INSERT INTO categories(name) VALUES (?)";
+                PreparedStatement stmt = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, category.getName());
 
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next();
-            return rs.getLong(1);
-        } catch (SQLException e) {
-            throw new RuntimeException("Error creating a new category.", e);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                rs.next();
+                return rs.getLong("id");
+            } catch (SQLException e) {
+                throw new RuntimeException("Error creating a new category.", e);
+            }
         }
     }
 
@@ -68,7 +73,7 @@ public class MySQLCategoriesDao implements Categories {
     }
 
     public Category findByCategory(String category) {
-        String query = "SELECT * FROM categories WHERE category = ?";
+        String query = "SELECT * FROM categories WHERE name = ? LIMIT 1";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, category);
