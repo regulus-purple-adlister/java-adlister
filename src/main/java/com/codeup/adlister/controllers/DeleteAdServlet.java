@@ -20,7 +20,7 @@ public class DeleteAdServlet extends HttpServlet{
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         long id = Long.parseLong(request.getParameter("id"));
         Ads adsDao = DaoFactory.getAdsDao();
-        adsDao.delete(id);
+        //adsDao.delete(id);
         response.sendRedirect("/ads");
 //        User user = (User) request.getSession().getAttribute("user");
 //        if (user == null) {

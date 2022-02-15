@@ -21,8 +21,8 @@ public class UpdateAdServlet extends HttpServlet{
         String query = request.getQueryString();
         Long id = Long.valueOf(query.substring(3));
 
-        Ad curAd = DaoFactory.getAdsDao().findOneAd(id);
-        request.getSession().setAttribute("ad", curAd);
+        //Ad curAd = DaoFactory.getAdsDao().findOneAd(id);
+        //request.getSession().setAttribute("ad", curAd);
 
         request.getRequestDispatcher("/WEB-INF/ads/update_ad.jsp").forward(request, response);
     }
@@ -34,7 +34,7 @@ public class UpdateAdServlet extends HttpServlet{
 
         try {
             Ad ad = new Ad(id, title, description);
-            DaoFactory.getAdsDao().update(ad);
+            //DaoFactory.getAdsDao().update(ad);
             request.getSession().setAttribute("ad", ad);
             response.sendRedirect("/profile");
         } catch (Exception e) {
