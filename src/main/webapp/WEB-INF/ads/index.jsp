@@ -11,7 +11,6 @@
 
 <div class="container">
     <h1>Here Are all the ads!</h1>
-
     <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
 </div>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
