@@ -46,7 +46,7 @@ public class MySQLAdCatsDao implements AdCats {
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getLong(1);
+            return 1L;
         } catch (SQLException e) {
             throw new RuntimeException("Error creating new ad-cat link", e);
         }

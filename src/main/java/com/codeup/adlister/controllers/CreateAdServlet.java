@@ -33,15 +33,21 @@ public class CreateAdServlet extends HttpServlet {
             request.getParameter("title"),
             request.getParameter("description")
         );
-        List<String> catStrings = Arrays.asList(request.getParameter("category").split(","));
-        List<Category> categories = new ArrayList<>();
-        for (String str : catStrings) {
-            categories.add(new Category(request.getParameter("category")));
-        }
-        Category cat = new Category(request.getParameter("category"));
-        long catId = DaoFactory.getCategoriesDao().insert(cat);
+
         long adId = DaoFactory.getAdsDao().insert(ad);
-        DaoFactory.getAdCatDao().insert(catId, adId);
+
+        // process new categories
+        List<String> catStrings = Arrays.asList(request.getParameter("category").split("\\s*,\\s*"));
+        System.out.println("all strings: " + catStrings);
+        for (String str : catStrings) {
+            System.out.println("string: " + str);
+            Category cat = new Category(str);
+            long catId = DaoFactory.getCategoriesDao().insert(cat);
+            DaoFactory.getAdCatDao().insert(catId, adId);
+        }
+        //Category cat = new Category(request.getParameter("category"));
+//        long catId = DaoFactory.getCategoriesDao().insert(cat);
+//        DaoFactory.getAdCatDao().insert(catId, adId);
         response.sendRedirect("/ads");
     }
 }

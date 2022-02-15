@@ -39,7 +39,7 @@ public class MySQLCategoriesDao implements Categories {
     public Long insert(Category category) {
         // check if category already exists before adding a new one
         Category catExisting = findByCategory(category.getName());
-        if (catExisting.getName() != null) {
+        if (catExisting != null) {
             return catExisting.getId();
         } else {
             try {
@@ -50,7 +50,7 @@ public class MySQLCategoriesDao implements Categories {
                 stmt.executeUpdate();
                 ResultSet rs = stmt.getGeneratedKeys();
                 rs.next();
-                return rs.getLong("id");
+                return rs.getLong(1);
             } catch (SQLException e) {
                 throw new RuntimeException("Error creating a new category.", e);
             }
@@ -73,11 +73,16 @@ public class MySQLCategoriesDao implements Categories {
     }
 
     public Category findByCategory(String category) {
-        String query = "SELECT * FROM categories WHERE name = ? LIMIT 1";
         try {
+            String query = "SELECT * FROM categories WHERE name = ? LIMIT 1";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, category);
-            return extractCategory(stmt.executeQuery());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return extractCategory(rs);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error finding category", e);
         }
