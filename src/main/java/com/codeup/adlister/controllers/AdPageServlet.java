@@ -16,16 +16,14 @@ public class AdPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathString = request.getPathInfo().substring(1);
-        // bad quick solution needs to be replaced with a dao method and real SQL query
-        List<Ad> ads = DaoFactory.getAdsDao().all();
-        for (Ad ad : ads) {
-            // if any ads' ids match the path string, we send the ad info to a template page and forward user
-            if (String.valueOf(ad.getId()).equals(pathString)) {
-                request.setAttribute("ad", ad);
-                request.getRequestDispatcher("/WEB-INF/ads/ad.jsp").forward(request, response);
-            }
+        try {
+            long id = Long.parseLong(pathString);
+            Ad ad = DaoFactory.getAdsDao().getAd(id);
+            request.setAttribute("ad", ad);
+            request.getRequestDispatcher("/WEB-INF/ads/ad.jsp").forward(request, response);
+        } catch (NumberFormatException | NullPointerException e) {
+            // if no matches are found, redirect to the ads index
+            response.sendRedirect("/ads");
         }
-        // if no matches are found, redirect to the ads index
-        response.sendRedirect("/ads");
     }
 }
