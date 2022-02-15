@@ -61,7 +61,9 @@ public class MySQLAdsDao implements Ads {
             String sql = "SELECT * FROM ads WHERE id = ?;";
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, id);
-            ad = extractAd(stmt.executeQuery());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            ad = extractAd(rs);
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e);
         }
