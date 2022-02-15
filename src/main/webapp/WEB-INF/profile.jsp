@@ -12,6 +12,9 @@
     <div class="container">
         <h1>Welcome, <c:out value="${sessionScope.user.username}" />!</h1>
     </div>
-
+    <div class="container">
+        <h2>User created ads:</h2>
+        <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
+    </div>
 </body>
 </html>
