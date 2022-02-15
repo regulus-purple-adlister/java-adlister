@@ -8,7 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import static java.lang.System.out;
 
 @WebServlet(name = "controllers.RegisterServlet", urlPatterns = "/register")
 public class RegisterServlet extends HttpServlet {
@@ -35,7 +41,17 @@ public class RegisterServlet extends HttpServlet {
 
         // create and save a new user
         User user = new User(username, email, password);
-        DaoFactory.getUsersDao().insert(user);
+
+            String infoMsg = "Please choose a different username...";
+
+        try {
+            DaoFactory.getUsersDao().insert(user);
         response.sendRedirect("/login");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            response.sendRedirect("/register");
+            e.printStackTrace();
+            request.getSession().setAttribute("userDuplicate", infoMsg);
+            out.println("Please choose a different username...");
+        }
     }
 }
