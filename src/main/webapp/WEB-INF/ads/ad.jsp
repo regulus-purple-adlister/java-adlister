@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/partials/head.jsp">
-        <jsp:param name="title" value="placeholder" />
+        <jsp:param name="title" value="${ad.title} | AdLister" />
     </jsp:include>
 </head>
 <body>
@@ -20,10 +20,14 @@
         </c:forEach>
     </ul>
 </div>
-<div class="container">
-    <button type="button" class="btn btn-primary">Update listing</button>
-    <button type="button" class="btn btn-danger">Delete listing</button>
-</div>
+<%-- this c:if test is commented out for sake of convenience of debugging the ad update/delete --%>
+<%-- when features are finished it should be reenabled so only the poster can change their ad --%>
+<%--<c:if test="${sessionScope.user.id == ad.userId}">--%>
+    <div class="container">
+        <button type="button" class="btn btn-primary">Update listing</button>
+        <button type="button" class="btn btn-danger">Delete listing</button>
+    </div>
+<%--</c:if>--%>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>
