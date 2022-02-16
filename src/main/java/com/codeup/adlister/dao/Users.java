@@ -9,4 +9,5 @@ public interface Users {
     User findByUsername(String username);
     Long insert(User user) throws SQLIntegrityConstraintViolationException;
     User findById(long userId);
+    void updatePassword(User user);
 }
