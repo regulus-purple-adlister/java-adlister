@@ -18,9 +18,6 @@ public class SearchAdsServlet extends HttpServlet {
         String query = request.getParameter("search");
         String type = request.getParameter("type");
         if (query != null && type != null) {
-            if (query.isEmpty()) {
-                query = ""; // this may not work and might have to be handled in ads dao instead
-            }
             List<Ad> adsResult = DaoFactory.getAdsDao().searchAds(query, type);
             request.setAttribute("ads", adsResult);
             request.getRequestDispatcher("/WEB-INF/ads/results.jsp").forward(request, response);
