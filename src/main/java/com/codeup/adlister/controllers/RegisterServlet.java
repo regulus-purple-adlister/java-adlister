@@ -65,6 +65,7 @@ public class RegisterServlet extends HttpServlet {
             User user = new User(username, email, password);
             try {
                 DaoFactory.getUsersDao().insert(user);
+                request.getSession().setAttribute("user", user);
                 response.sendRedirect("/login");
             } catch (SQLIntegrityConstraintViolationException e) {
                 response.sendRedirect("/register");
