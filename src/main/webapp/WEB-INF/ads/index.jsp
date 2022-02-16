@@ -10,7 +10,10 @@
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
 <div class="container">
-    <h1>All Ads</h1>
+    <div class="container-fluid d-flex">
+        <h1 class="ml-0">All Ads</h1>
+        <a class="ml-auto mr-0" href="/ads/create" >Post an ad</a>
+    </div>
     <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
 </div>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
