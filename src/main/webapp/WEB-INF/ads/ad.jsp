@@ -16,7 +16,9 @@
         <li class="list-group-item list-group-item-light p-2">Tags:</li>
         <c:forEach var="category" items="${categories}">
             <li class="list-group-item p-2">
-                <c:out value="${category.name}" />
+                <a href="<c:url value="/search/?search=${category.name}&type=category" />">
+                    <c:out value="${category.name}" />
+                </a>
             </li>
         </c:forEach>
     </ul>
