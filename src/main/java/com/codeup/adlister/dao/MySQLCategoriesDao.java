@@ -57,6 +57,21 @@ public class MySQLCategoriesDao implements Categories {
         }
     }
 
+    @Override
+    public List<Category> getCatsForAdId(long id) {
+        try {
+            String sql = "SELECT * FROM categories cat JOIN ad_cat ac on cat.id = ac.category_id WHERE ac.ad_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return createCategoriesFromResults(rs);
+        } catch (SQLException e) {
+            System.out.println("Error retrieving categories for ad id " + id);
+        }
+        // if no categories match the given ad id, return an empty list
+        return new ArrayList<>();
+    }
+
     private Category extractCategory(ResultSet rs) throws SQLException {
         return new Category(
                 rs.getLong("id"),
