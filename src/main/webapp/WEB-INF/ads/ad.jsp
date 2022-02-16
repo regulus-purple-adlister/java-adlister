@@ -12,9 +12,10 @@
     <h1><c:out value="${ad.title}" /></h1>
     <p>Posted by: <c:out value="${user.username}" /></p>
     <p><c:out value="${ad.description}" /></p>
-    <ul class="list-group list-group-horizontal-sm">
+    <ul class="list-group list-group-horizontal-sm my-2 mx-0">
+        <li class="list-group-item list-group-item-light p-2">Tags:</li>
         <c:forEach var="category" items="${categories}">
-            <li class="list-group-item">
+            <li class="list-group-item p-2">
                 <c:out value="${category.name}" />
             </li>
         </c:forEach>
