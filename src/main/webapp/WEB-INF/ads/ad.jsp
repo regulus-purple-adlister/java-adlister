@@ -18,5 +18,6 @@
     <button type="button" class="btn btn-primary">Update listing</button>
     <button type="button" class="btn btn-danger">Delete listing</button>
 </div>
+<jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>
