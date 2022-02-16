@@ -29,29 +29,46 @@ public class RegisterServlet extends HttpServlet {
         String passwordConfirmation = request.getParameter("confirm_password");
 
         // validate input
-        boolean inputHasErrors = username.isEmpty()
-            || email.isEmpty()
-            || password.isEmpty()
-            || (! password.equals(passwordConfirmation));
-
-        if (inputHasErrors) {
-            response.sendRedirect("/register");
-            return;
+        boolean formErrors = false;
+        // check if username is valid
+        if (username.isEmpty()) {
+            request.setAttribute("userError", "Username is required.");
+            formErrors = true;
+        } else if (DaoFactory.getUsersDao().findByUsername(username) != null) {
+            request.setAttribute("userError", "Username is already taken.");
+            formErrors = true;
+        }
+        // check if email is valid
+        if (email.isEmpty()) {
+            request.setAttribute("emailError", "Email is required.");
+            formErrors = true;
+        }
+        // check if password is valid
+        if (password.isEmpty()) {
+            request.setAttribute("passError", "Password is required.");
+            formErrors = true;
+        } else if (! password.equals(passwordConfirmation)) {
+            request.setAttribute("passError", "Passwords must match.");
+            formErrors = true;
         }
 
-        // create and save a new user
-        User user = new User(username, email, password);
-
-            String infoMsg = "Please choose a different username...";
-
-        try {
-            DaoFactory.getUsersDao().insert(user);
-        response.sendRedirect("/login");
-        } catch (SQLIntegrityConstraintViolationException e) {
-            response.sendRedirect("/register");
-            e.printStackTrace();
-            request.getSession().setAttribute("userDuplicate", infoMsg);
-            out.println("Please choose a different username...");
+        if (formErrors) { // if any input is invalid, redirect back to register form with the new error messages
+            // save the contents of fields besides password (for security) so the form is sticky
+            request.setAttribute("username", username);
+            request.setAttribute("email", email);
+            try {
+                request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+        } else { // if everything was fine, let's create the user and add them to database
+            User user = new User(username, email, password);
+            try {
+                DaoFactory.getUsersDao().insert(user);
+                response.sendRedirect("/login");
+            } catch (SQLIntegrityConstraintViolationException e) {
+                response.sendRedirect("/register");
+            }
         }
     }
 }
