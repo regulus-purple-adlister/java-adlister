@@ -2,6 +2,7 @@ package com.codeup.adlister.controllers;
 
 import com.codeup.adlister.dao.DaoFactory;
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.Category;
 import com.codeup.adlister.models.User;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
@@ -29,7 +33,21 @@ public class CreateAdServlet extends HttpServlet {
             request.getParameter("title"),
             request.getParameter("description")
         );
-        DaoFactory.getAdsDao().insert(ad);
+
+        long adId = DaoFactory.getAdsDao().insert(ad);
+
+        // process new categories
+        List<String> catStrings = Arrays.asList(request.getParameter("category").split("\\s*,\\s*"));
+        System.out.println("all strings: " + catStrings);
+        for (String str : catStrings) {
+            System.out.println("string: " + str);
+            Category cat = new Category(str);
+            long catId = DaoFactory.getCategoriesDao().insert(cat);
+            DaoFactory.getAdCatDao().insert(catId, adId);
+        }
+        //Category cat = new Category(request.getParameter("category"));
+//        long catId = DaoFactory.getCategoriesDao().insert(cat);
+//        DaoFactory.getAdCatDao().insert(catId, adId);
         response.sendRedirect("/ads");
     }
 }

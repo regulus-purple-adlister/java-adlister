@@ -23,14 +23,8 @@ public class ViewProfileServlet extends HttpServlet {
         // get all ads for this user
         // this is another Java solution for something that should be done with a SQL query
         User user = (User) request.getSession().getAttribute("user");
-        List<Ad> ads = DaoFactory.getAdsDao().all();
-        List<Ad> userAds = new LinkedList<>();
-        for (Ad ad: ads) {
-            if (ad.getUserId() == user.getId()) {
-                userAds.add(ad);
-            }
-        }
-        request.setAttribute("ads", userAds);
+        List<Ad> ads = DaoFactory.getAdsDao().getAdsForUser(user.getId());
+        request.setAttribute("ads", ads);
         request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
 }

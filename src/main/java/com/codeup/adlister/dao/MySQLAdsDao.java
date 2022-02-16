@@ -1,6 +1,7 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
 import java.io.FileInputStream;
@@ -53,6 +54,51 @@ public class MySQLAdsDao implements Ads {
         } catch (SQLException e) {
             throw new RuntimeException("Error creating a new ad.", e);
         }
+    }
+
+    public Ad getAd(long id) {
+        Ad ad = null;
+        try {
+            String sql = "SELECT * FROM ads WHERE id = ?;";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            ad = extractAd(rs);
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e);
+        }
+        return ad;
+    }
+
+    @Override
+    public List<Ad> getAdsForUser(long userId) {
+        List<Ad> ads = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM ads WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            ads = createAdsFromResults(rs);
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e);
+        }
+        return ads;
+    }
+
+    @Override
+    public List<Ad> searchAds(String query, String type) {
+        List<Ad> ads = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM ads WHERE title LIKE ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, '%' + query + '%');
+            ResultSet rs = stmt.executeQuery();
+            ads = createAdsFromResults(rs);
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e);
+        }
+        return ads;
     }
 
     private Ad extractAd(ResultSet rs) throws SQLException {

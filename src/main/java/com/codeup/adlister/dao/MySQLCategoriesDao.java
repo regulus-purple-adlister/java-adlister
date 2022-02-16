@@ -37,19 +37,39 @@ public class MySQLCategoriesDao implements Categories {
 
     @Override
     public Long insert(Category category) {
-        try {
-            String insertQuery = "INSERT INTO categories(id, name) VALUES (?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-            stmt.setLong(1, category.getId());
-            stmt.setString(2, category.getName());
+        // check if category already exists before adding a new one
+        Category catExisting = findByCategory(category.getName());
+        if (catExisting != null) {
+            return catExisting.getId();
+        } else {
+            try {
+                String insertQuery = "INSERT INTO categories(name) VALUES (?)";
+                PreparedStatement stmt = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, category.getName());
 
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next();
-            return rs.getLong(1);
-        } catch (SQLException e) {
-            throw new RuntimeException("Error creating a new category.", e);
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                rs.next();
+                return rs.getLong(1);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error creating a new category.", e);
+            }
         }
+    }
+
+    @Override
+    public List<Category> getCatsForAdId(long id) {
+        try {
+            String sql = "SELECT * FROM categories cat JOIN ad_cat ac on cat.id = ac.category_id WHERE ac.ad_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            return createCategoriesFromResults(rs);
+        } catch (SQLException e) {
+            System.out.println("Error retrieving categories for ad id " + id);
+        }
+        // if no categories match the given ad id, return an empty list
+        return new ArrayList<>();
     }
 
     private Category extractCategory(ResultSet rs) throws SQLException {
@@ -68,11 +88,16 @@ public class MySQLCategoriesDao implements Categories {
     }
 
     public Category findByCategory(String category) {
-        String query = "SELECT * FROM categories WHERE category = ?";
         try {
+            String query = "SELECT * FROM categories WHERE name = ? LIMIT 1";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, category);
-            return extractCategory(stmt.executeQuery());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return extractCategory(rs);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error finding category", e);
         }
