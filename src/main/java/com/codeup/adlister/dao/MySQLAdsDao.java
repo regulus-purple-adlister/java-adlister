@@ -105,6 +105,24 @@ public class MySQLAdsDao implements Ads {
         return ads;
     }
 
+    public boolean updateAd(long id, String column, String value) {
+        try {
+            String sql = "UPDATE ads SET ? = ? WHERE id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, column);
+            stmt.setString(2, value);
+            stmt.setLong(3, id);
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error updating ad of id " + id + " column " + column);
+        }
+        return false;
+
+    }
+
     private ResultSet searchAdsByTitle(String query) throws SQLException {
         String sql = "SELECT * FROM ads WHERE title LIKE ?";
         PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
