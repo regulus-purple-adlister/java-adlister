@@ -105,6 +105,7 @@ public class MySQLAdsDao implements Ads {
         return ads;
     }
 
+    @Override
     public boolean updateAd(long id, String column, String value) {
         try {
             String sql = "UPDATE ads SET ? = ? WHERE id = ?";
@@ -122,6 +123,7 @@ public class MySQLAdsDao implements Ads {
         return false;
     }
 
+    @Override
     public boolean deleteAd(long id) {
         try {
             String sql = "DELETE FROM ads WHERE id = ?";

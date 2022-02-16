@@ -17,27 +17,15 @@ import java.util.List;
 @WebServlet(name = "controllers.DeleteAdServlet", urlPatterns = "/ads/delete_ad")
 public class DeleteAdServlet extends HttpServlet{
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long id = Long.parseLong(request.getParameter("id"));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Ads adsDao = DaoFactory.getAdsDao();
-        //adsDao.delete(id);
+        try {
+            long adId = Long.parseLong(request.getParameter("delete"));
+            adsDao.deleteAd(adId);
+        } catch (NumberFormatException e) {
+            System.out.println("Can't resolve ad id for deletion.");
+        }
         response.sendRedirect("/ads");
-//        User user = (User) request.getSession().getAttribute("user");
-//        if (user == null) {
-//            response.sendRedirect("/login");
-//            return;
-//        }
-//        String query = request.getQueryString();
-//        Long id = Long.valueOf(query.substring(3));
-//        DaoFactory.getAdsDao().delete(id);
-//        request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
-//    }
-//
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        System.out.println(adId);
-//        DaoFactory.getAdsDao().delete(adId);
-//        response.sendRedirect("/profile");
-
     }
 
 }

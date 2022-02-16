@@ -26,7 +26,9 @@
 <%--<c:if test="${sessionScope.user.id == ad.userId}">--%>
     <div class="container">
         <button type="button" class="btn btn-primary">Update listing</button>
-        <button type="button" class="btn btn-danger">Delete listing</button>
+        <form action="delete_ad" method="post">
+            <button type="submit" class="btn btn-danger" value="<c:out value="${ad.id}" />" name="delete">Delete listing</button>
+        </form>
     </div>
 <%--</c:if>--%>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
