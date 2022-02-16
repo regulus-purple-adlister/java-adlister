@@ -1,6 +1,7 @@
 package com.codeup.adlister.dao;
 
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.User;
 import com.mysql.cj.jdbc.Driver;
 
 import java.io.FileInputStream;
@@ -68,6 +69,21 @@ public class MySQLAdsDao implements Ads {
             System.out.println("SQL Exception: " + e);
         }
         return ad;
+    }
+
+    @Override
+    public List<Ad> getAdsForUser(long userId) {
+        List<Ad> ads = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM ads WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            ads = createAdsFromResults(rs);
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e);
+        }
+        return ads;
     }
 
     private Ad extractAd(ResultSet rs) throws SQLException {
