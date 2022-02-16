@@ -2,7 +2,7 @@
 <%-----------------------------------------------------------------------------------------------%>
 <%
     String username = (request.getParameter("username") == null) ? "" : request.getParameter("username");
-    String password = (request.getParameter("password") == null) ? "" : request.getParameter("password");
+//    String password = (request.getParameter("password") == null) ? "" : request.getParameter("password");
 %>
 <%-----------------------------------------------------------------------------------------------%>
 <html>
@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" name="password" class="form-control" type="password" value="<%=password%>">
+                <input id="password" name="password" class="form-control" type="password">
             </div>
             <input type="submit" class="btn btn-primary btn-block" value="Log In">
         </form>
