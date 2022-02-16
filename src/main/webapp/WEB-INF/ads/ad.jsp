@@ -25,7 +25,9 @@
 <%-- when features are finished it should be reenabled so only the poster can change their ad --%>
 <%--<c:if test="${sessionScope.user.id == ad.userId}">--%>
     <div class="container">
-        <button type="button" class="btn btn-primary">Update listing</button>
+        <form action="update_ad" method="post">
+            <button type="button" class="btn btn-primary" value="<c:out value="${ad.id}" />" name="update">Update listing</button>
+        </form>
         <form action="delete_ad" method="post">
             <button type="submit" class="btn btn-danger" value="<c:out value="${ad.id}" />" name="delete">Delete listing</button>
         </form>
