@@ -90,15 +90,40 @@ public class MySQLAdsDao implements Ads {
     public List<Ad> searchAds(String query, String type) {
         List<Ad> ads = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM ads WHERE title LIKE ?";
-            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, '%' + query + '%');
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = null;
+            if (type.equals("title")) {
+                rs = searchAdsByTitle(query);
+            } else if (type.equals("user")) {
+                rs = searchAdsByUser(query);
+            } else if (type.equals("category")) {
+                rs = searchAdsByCategory(query);
+            }
             ads = createAdsFromResults(rs);
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e);
         }
         return ads;
+    }
+
+    private ResultSet searchAdsByTitle(String query) throws SQLException {
+        String sql = "SELECT * FROM ads WHERE title LIKE ?";
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, '%' + query + '%');
+        return stmt.executeQuery();
+    }
+
+    private ResultSet searchAdsByUser(String query) throws SQLException {
+        String sql = "SELECT * FROM ads JOIN users u on ads.user_id = u.id WHERE u.username LIKE ?";
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, '%' + query + '%');
+        return stmt.executeQuery();
+    }
+
+    private ResultSet searchAdsByCategory(String query) throws SQLException {
+        String sql = "SELECT * FROM ads JOIN ad_cat ac on ads.id = ac.ad_id JOIN categories c on c.id = ac.category_id WHERE c.name LIKE ?";
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.setString(1, '%' + query + '%');
+        return stmt.executeQuery();
     }
 
     private Ad extractAd(ResultSet rs) throws SQLException {

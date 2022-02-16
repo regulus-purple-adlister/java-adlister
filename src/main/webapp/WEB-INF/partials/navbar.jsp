@@ -9,6 +9,7 @@
             <input class="form-control mr-sm-2" type="search" name="search" id="search-text" placeholder="Search ads" aria-label="Search">
             <select class="form-control mr-sm-2" id="search-type" name="type">
                 <option value="title" selected>Ads by title</option>
+                <option value="category">Ads by category</option>
                 <option value="user">Ads by user</option>
             </select>
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
