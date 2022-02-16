@@ -10,7 +10,7 @@
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
 <div class="container">
-    <div class="container-fluid d-flex">
+    <div class="container-fluid d-flex px-0">
         <h1 class="ml-0">All Ads</h1>
         <a class="ml-auto mr-0" href="/ads/create" >Post an ad</a>
     </div>
