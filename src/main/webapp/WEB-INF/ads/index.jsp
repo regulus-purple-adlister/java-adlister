@@ -12,7 +12,7 @@
 <div class="container">
     <div class="container-fluid d-flex px-0">
         <h1 class="ml-0">All Ads</h1>
-        <a class="ml-auto mr-0" href="/ads/create" >Post an ad</a>
+        <a class="btn btn-outline-primary ml-auto mr-0 my-auto" href="/ads/create" type="button">Post an ad</a>
     </div>
     <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
 </div>
