@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/partials/head.jsp">
-        <jsp:param name="title" value="${ad.title} | AdLister" />
+        <jsp:param name="title" value="${ad.title}" />
     </jsp:include>
 </head>
 <body>
@@ -16,7 +16,9 @@
         <li class="list-group-item list-group-item-light p-2">Tags:</li>
         <c:forEach var="category" items="${categories}">
             <li class="list-group-item p-2">
-                <c:out value="${category.name}" />
+                <a href="<c:url value="/search/?search=${category.name}&type=category" />">
+                    <c:out value="${category.name}" />
+                </a>
             </li>
         </c:forEach>
     </ul>
@@ -25,8 +27,12 @@
 <%-- when features are finished it should be reenabled so only the poster can change their ad --%>
 <%--<c:if test="${sessionScope.user.id == ad.userId}">--%>
     <div class="container">
-        <button type="button" class="btn btn-primary">Update listing</button>
-        <button type="button" class="btn btn-danger">Delete listing</button>
+        <form action="update_ad" method="post">
+            <button type="button" class="btn btn-primary" value="<c:out value="${ad.id}" />" name="update">Update listing</button>
+        </form>
+        <form action="delete_ad" method="post">
+            <button type="submit" class="btn btn-danger" value="<c:out value="${ad.id}" />" name="delete">Delete listing</button>
+        </form>
     </div>
 <%--</c:if>--%>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />

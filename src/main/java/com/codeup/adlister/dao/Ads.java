@@ -15,4 +15,8 @@ public interface Ads {
     List<Ad> getAdsForUser(long userId);
 
     List<Ad> searchAds(String query, String type);
+
+    boolean updateAd(long id, String column, String value);
+
+    boolean deleteAd(long id);
 }
