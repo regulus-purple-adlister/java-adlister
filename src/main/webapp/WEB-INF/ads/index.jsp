@@ -3,14 +3,14 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/partials/head.jsp">
-        <jsp:param name="title" value="Viewing All The Ads" />
+        <jsp:param name="title" value="All Ads" />
     </jsp:include>
 </head>
 <body>
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
 <div class="container">
-    <h1>Here Are all the ads!</h1>
+    <h1>All Ads</h1>
     <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
 </div>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />

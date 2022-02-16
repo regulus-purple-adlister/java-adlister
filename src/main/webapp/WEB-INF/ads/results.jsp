@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/partials/head.jsp">
-        <jsp:param name="title" value="Ads Search Results" />
+        <jsp:param name="title" value="${param.search} Search" />
     </jsp:include>
 </head>
 <body>
