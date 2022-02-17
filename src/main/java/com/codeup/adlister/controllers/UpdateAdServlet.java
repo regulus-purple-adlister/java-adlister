@@ -2,6 +2,7 @@ package com.codeup.adlister.controllers;
 
 import com.codeup.adlister.dao.DaoFactory;
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.Category;
 import com.codeup.adlister.models.User;
 
 
@@ -12,19 +13,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @WebServlet(name = "controllers.EditAdServlet", urlPatterns = "/ads/update_ad")
 public class UpdateAdServlet extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String query = request.getQueryString();
-        Long id = Long.valueOf(query.substring(3));
+        long adId = Long.parseLong(request.getParameter("update"));
+        Ad ad = DaoFactory.getAdsDao().getAd(adId);
+        // retrieve ad's associated categories and convert them into a comma-seperated string
+        List<Category> categories = DaoFactory.getCategoriesDao().getCatsForAdId(ad.getId());
+        String catString = categories.stream()
+                .map(Category::getName)
+                .collect(Collectors.joining(", "));
 
-        //Ad curAd = DaoFactory.getAdsDao().findOneAd(id);
-        //request.getSession().setAttribute("ad", curAd);
+        request.setAttribute("title", ad.getTitle());
+        request.setAttribute("description", ad.getDescription());
+        request.setAttribute("category", catString);
 
-        request.getRequestDispatcher("/WEB-INF/ads/update_ad.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/ads/update.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
