@@ -27,27 +27,50 @@ public class CreateAdServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        Ad ad = new Ad(
-            user.getId(),
-            request.getParameter("title"),
-            request.getParameter("description")
-        );
 
-        long adId = DaoFactory.getAdsDao().insert(ad);
-
-        // process new categories
-        List<String> catStrings = Arrays.asList(request.getParameter("category").split("\\s*,\\s*"));
-        System.out.println("all strings: " + catStrings);
-        for (String str : catStrings) {
-            System.out.println("string: " + str);
-            Category cat = new Category(str);
-            long catId = DaoFactory.getCategoriesDao().insert(cat);
-            DaoFactory.getAdCatDao().insert(catId, adId);
+        // check all fields have required info
+        boolean formErrors = false;
+        if (request.getParameter("title").isEmpty()) {
+            request.setAttribute("titleError", "Title is required.");
+            formErrors = true;
         }
-        //Category cat = new Category(request.getParameter("category"));
-//        long catId = DaoFactory.getCategoriesDao().insert(cat);
-//        DaoFactory.getAdCatDao().insert(catId, adId);
-        response.sendRedirect("/ads");
+        if (request.getParameter("description").isEmpty()) {
+            request.setAttribute("descriptionError", "Description is required.");
+            formErrors = true;
+        }
+        if (request.getParameter("category").isEmpty()) {
+            request.setAttribute("categoryError", "Category/categories are required.");
+            formErrors = true;
+        }
+
+        if (formErrors) {
+            // save the contents of fields so the form is sticky
+            request.setAttribute("title", request.getParameter("title"));
+            request.setAttribute("description", request.getParameter("description"));
+            request.setAttribute("category", request.getParameter("category"));
+            try {
+                request.getRequestDispatcher("/WEB-INF/ads/create.jsp").forward(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+        } else {
+            User user = (User) request.getSession().getAttribute("user");
+            Ad ad = new Ad(
+                    user.getId(),
+                    request.getParameter("title"),
+                    request.getParameter("description")
+            );
+
+            long adId = DaoFactory.getAdsDao().insert(ad);
+
+            // process new categories
+            List<String> catStrings = Arrays.asList(request.getParameter("category").split("\\s*,\\s*"));
+            for (String str : catStrings) {
+                Category cat = new Category(str);
+                long catId = DaoFactory.getCategoriesDao().insert(cat);
+                DaoFactory.getAdCatDao().insert(catId, adId);
+            }
+            response.sendRedirect("/ads");
+        }
     }
 }
