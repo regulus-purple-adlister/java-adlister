@@ -6,7 +6,7 @@ import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
 
-public class MySQLProfilesDao {
+public class MySQLProfilesDao implements Profiles {
     private Connection connection;
 
     public MySQLProfilesDao(Config config) {
@@ -27,8 +27,8 @@ public class MySQLProfilesDao {
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, profile.getFirstName());
-            stmt.setString(1, profile.getLastName());
-            stmt.setString(1, profile.getCity());
+            stmt.setString(2, profile.getLastName());
+            stmt.setString(3, profile.getCity());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
@@ -40,9 +40,6 @@ public class MySQLProfilesDao {
     }
 
     private Profile extractProfile(ResultSet rs) throws SQLException {
-        if (! rs.next()) {
-            return null;
-        }
         return new Profile(
                 rs.getLong("id"),
                 rs.getString("firstname"),
@@ -50,4 +47,21 @@ public class MySQLProfilesDao {
                 rs.getString("city")
         );
     }
+
+    public Profile getProfile(long id) {
+        Profile profile = null;
+        try {
+            String sql = "SELECT * FROM profile WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            profile.extractProfile(rs);
+        } catch (SQLException e) {
+            System.out.println("error" + e);
+        }
+        return profile;
+    }
+
+
 }

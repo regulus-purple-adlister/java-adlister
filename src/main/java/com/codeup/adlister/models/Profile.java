@@ -1,5 +1,7 @@
 package com.codeup.adlister.models;
 
+import java.sql.ResultSet;
+
 public class Profile {
     private long id;
     private String firstName;
@@ -52,5 +54,8 @@ public class Profile {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void extractProfile(ResultSet rs) {
     }
 }
