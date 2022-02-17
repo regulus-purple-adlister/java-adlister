@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "EditPasswordServlet", urlPatterns = "/profile/password")
+@WebServlet(name = "controllers.EditPasswordServlet", urlPatterns = "/editPassword")
 public class EditPasswordServlet extends HttpServlet {
+    protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/editPassword.jsp").forward(request, response);
+    }
     protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String oldPassword = request.getParameter("old_password");
@@ -26,11 +29,11 @@ public class EditPasswordServlet extends HttpServlet {
         User user = (User)request.getSession().getAttribute("user");
 
         if(!BCrypt.checkpw(oldPassword, user.getPassword()) || !newPassword.equals(confirmNewPassword)) {
-            response.sendRedirect("/profile/password");
+            response.sendRedirect("/editPassword");
         } else {
             user.setPassword(hash);
             DaoFactory.getUsersDao().updatePassword(user);
-            response.sendRedirect("/profile");
+            response.sendRedirect("/login");
         }
     }
 }

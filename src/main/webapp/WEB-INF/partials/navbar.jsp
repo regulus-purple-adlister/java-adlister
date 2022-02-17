@@ -21,6 +21,7 @@
             </c:if>
             <c:if test="${user != null}">
                 <li class="mr-2 mb-1"><a href="/profile">Profile</a></li>
+                <li class="mr-2 mb-1"><a href="/editPassword">Edit Password</a></li>
                 <li class="mr-2 mb-1"><a href="/logout">Logout</a></li>
             </c:if>
         </ul>
