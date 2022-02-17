@@ -3,12 +3,16 @@ package com.codeup.adlister.models;
 import java.sql.ResultSet;
 
 public class Profile {
-    private long id;
+    private long userId;
     private String firstName;
     private String lastName;
     private String city;
 
     public Profile() {
+    }
+
+    public Profile(long userId) {
+        this.userId = userId;
     }
 
     public Profile(String firstName, String lastName, String city) {
@@ -17,19 +21,19 @@ public class Profile {
         this.city = city;
     }
 
-    public Profile(long id, String firstName, String lastName, String city) {
-        this.id = id;
+    public Profile(long userId, String firstName, String lastName, String city) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.city = city;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long id) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

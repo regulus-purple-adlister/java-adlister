@@ -23,16 +23,32 @@ public class MySQLProfilesDao implements Profiles {
     }
 
     public Long insert(Profile profile) {
-        String query = "INSERT INTO profile(first_name, last_name, city) VALUES (?, ?, ?)";
+        String query = "INSERT INTO profile(user_id) VALUES (?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, profile.getUserId());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return profile.getUserId();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("error inserting profile");
+        }
+    }
+
+    public Long update(Profile profile) {
+        String query = "UPDATE profile SET first_name = ?, last_name = ?, city = ? WHERE user_id = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, profile.getFirstName());
             stmt.setString(2, profile.getLastName());
             stmt.setString(3, profile.getCity());
+            stmt.setLong(4, profile.getUserId());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getLong(1);
+            return profile.getUserId();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("error updating profile");
@@ -41,7 +57,7 @@ public class MySQLProfilesDao implements Profiles {
 
     private Profile extractProfile(ResultSet rs) throws SQLException {
         return new Profile(
-                rs.getLong("id"),
+                rs.getLong("user_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("city")

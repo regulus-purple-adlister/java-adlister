@@ -38,7 +38,7 @@ public class UpdateProfileServlet extends HttpServlet {
         );
 
         try {
-            long profileId = DaoFactory.getProfilesDao().insert(profile);
+            long profileId = DaoFactory.getProfilesDao().update(profile);
         } catch (SQLIntegrityConstraintViolationException e) {
             e.printStackTrace();
         }

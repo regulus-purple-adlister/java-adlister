@@ -1,6 +1,7 @@
 package com.codeup.adlister.controllers;
 
 import com.codeup.adlister.dao.DaoFactory;
+import com.codeup.adlister.models.Profile;
 import com.codeup.adlister.models.User;
 
 import javax.servlet.ServletException;
@@ -27,6 +28,9 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm_password");
+        String firstName = request.getParameter("first_name");
+        String lastName = request.getParameter("last_name");
+        String city = request.getParameter("city");
 
         // validate input
         boolean formErrors = false;
@@ -67,6 +71,9 @@ public class RegisterServlet extends HttpServlet {
                 DaoFactory.getUsersDao().insert(user);
                 user = DaoFactory.getUsersDao().findByUsername(username);
                 request.getSession().setAttribute("user", user);
+            Profile profile = new Profile(user.getId());
+                DaoFactory.getProfilesDao().insert(profile);
+                request.getSession().setAttribute("profile", profile);
                 response.sendRedirect("/login");
             } catch (SQLIntegrityConstraintViolationException e) {
                 response.sendRedirect("/register");

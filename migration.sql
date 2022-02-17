@@ -37,3 +37,14 @@ CREATE TABLE IF NOT EXISTS ad_cat (
     FOREIGN KEY (ad_id) REFERENCES ads (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS profile (
+    user_id    INT UNSIGNED NOT NULL,
+    first_name VARCHAR(50),
+    last_name  VARCHAR(50),
+    city       VARCHAR(50),
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+
+
