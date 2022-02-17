@@ -16,7 +16,7 @@ public interface Ads {
 
     List<Ad> searchAds(String query, String type);
 
-    boolean updateAd(long id, String column, String value);
+    boolean updateAd(Ad ad);
 
     boolean deleteAd(long id);
 }
