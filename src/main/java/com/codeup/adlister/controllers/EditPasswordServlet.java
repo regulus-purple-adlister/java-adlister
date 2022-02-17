@@ -25,15 +25,16 @@ public class EditPasswordServlet extends HttpServlet {
         String oldPassword = request.getParameter("old_password");
         String newPassword = request.getParameter("new_password");
         String confirmNewPassword = request.getParameter("confirm_new_password");
-        String hash = Password.hash(newPassword);
+//        String hash = Password.hash(newPassword);
         User user = (User)request.getSession().getAttribute("user");
 
         if(!BCrypt.checkpw(oldPassword, user.getPassword()) || !newPassword.equals(confirmNewPassword)) {
             response.sendRedirect("/editPassword");
         } else {
-            user.setPassword(hash);
+            user.setPassword(newPassword);
             DaoFactory.getUsersDao().updatePassword(user);
-            response.sendRedirect("/login");
+            request.getSession().setAttribute("user", user);
+            response.sendRedirect("/logout");
         }
     }
 }
