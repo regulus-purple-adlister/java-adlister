@@ -24,6 +24,7 @@
                 <label for="password">Password</label>
                 <input id="password" name="password" class="form-control" type="password">
             </div>
+            <p name="error-message" style="display: block; color: red">Error Message Displayed Here</p>
             <input type="submit" class="btn btn-primary btn-block" value="Log In">
         </form>
     </div>
