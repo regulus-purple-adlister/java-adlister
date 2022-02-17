@@ -24,20 +24,32 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = DaoFactory.getUsersDao().findByUsername(username);
 
-        if (user == null) {
-            response.sendRedirect("/login");
-            return;
+        User user = null;
+
+        // check for valid user by username or email
+        User userByName = DaoFactory.getUsersDao().findByUsername(username);
+        if (userByName != null) {
+            user = userByName;
+        } else {
+            user = DaoFactory.getUsersDao().findByEmail(username);
         }
 
-        boolean validAttempt = Password.check(password, user.getPassword());
-
-        if (validAttempt) {
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect("/profile");
-        } else {
-            response.sendRedirect("/login");
+        if (user != null) { // if user exists...
+            if (Password.check(password, user.getPassword())) { // if passwords match...
+                // log user in!
+                request.getSession().setAttribute("user", user);
+                response.sendRedirect("/profile");
+                return;
+            }
+        }
+        // if any of these failed, login was bad so give error to user
+        request.setAttribute("username", username);
+        request.setAttribute("loginError", "The given account information does not match any record in our database.");
+        try {
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 }
