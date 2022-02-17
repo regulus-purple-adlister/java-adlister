@@ -35,12 +35,6 @@ public class LoginServlet extends HttpServlet {
             user = DaoFactory.getUsersDao().findByEmail(username);
         }
 
-//        if (user == null) {
-//            response.sendRedirect("/login");
-//            return;
-//        }
-//        boolean validAttempt = user != null || Password.check(password, user.getPassword());
-
         if (user != null) { // if user exists...
             if (Password.check(password, user.getPassword())) { // if passwords match...
                 // log user in!
@@ -51,7 +45,7 @@ public class LoginServlet extends HttpServlet {
         }
         // if any of these failed, login was bad so give error to user
         request.setAttribute("username", username);
-        request.setAttribute("loginError", "The given username and password do not match any record in our database.");
+        request.setAttribute("loginError", "The given account information does not match any record in our database.");
         try {
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } catch (ServletException e) {
