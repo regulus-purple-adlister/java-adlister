@@ -37,7 +37,14 @@ public class LoginServlet extends HttpServlet {
             request.getSession().setAttribute("user", user);
             response.sendRedirect("/profile");
         } else {
-            response.sendRedirect("/login");
+            request.setAttribute("username", username);
+            request.setAttribute("loginError", "The given username and password do not match any record in our database.");
+            try {
+                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
