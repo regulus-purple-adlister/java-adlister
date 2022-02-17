@@ -41,54 +41,53 @@
 <script>
     $(function () {
         // regex match for strings that is only true when something goes like {stuff}@{stuff}.{stuff} ie email@email.com
-        const validateEmail = (email) => {
+        const checkEmail = (email) => {
             return email.match(
                 /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
         };
-
-        const usernameHelp = {
+        const validateUsername = {
             el: $('#username-help').hide(),
             tgt: $('#username'),
             ok: function () {
                 return this.tgt.val().length >= 4;
             }
         }
-        const emailHelp =  {
+        const validateEmail =  {
             el: $('#email-help').hide(),
             tgt: $('#email'),
             ok: function () {
-                return validateEmail(this.tgt.val());
+                return checkEmail(this.tgt.val());
             }
         }
-        const passwordHelp = {
+        const validatePassword = {
             el: $('#password-help').hide(),
             tgt: $('#password'),
             ok: function () {
                 return this.tgt.val().length >= 6;
             }
         }
-        const confirmHelp = {
+        const validateConfirmPass = {
             el: $('#confirm-help').hide(),
             tgt: $('#confirm_password'),
             ok: function () {
-                return this.tgt.val() === passwordHelp.tgt.val();
+                return this.tgt.val() === validatePassword.tgt.val();
             }
         }
         const submit = {
             el: $('#submit-btn').prop('disabled', true),
             ok: function () {
-                if (usernameHelp.ok() &&
-                    emailHelp.ok() &&
-                    passwordHelp.ok() &&
-                    confirmHelp.ok()) {
+                if (validateUsername.ok() &&
+                    validateEmail.ok() &&
+                    validatePassword.ok() &&
+                    validateConfirmPass.ok()) {
                     this.el.prop('disabled', false);
                 } else {
                     this.el.prop('disabled', true);
                 }
             }
         }
-        const inputs = [usernameHelp, emailHelp, passwordHelp, confirmHelp];
+        const inputs = [ validateUsername, validateEmail, validatePassword, validateConfirmPass ];
         inputs.forEach(input => {
             input.el.hide();
             input.tgt.on('input', function () {
