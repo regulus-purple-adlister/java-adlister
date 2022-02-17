@@ -9,23 +9,23 @@
 <body>
 <jsp:include page="/WEB-INF/partials/navbar.jsp" />
 
-<div class="container">
-    <h1><c:out value="${sessionScope.user.username}" />!</h1>
+<div class="container mt-4 mb-4">
+    <h1>Edit</h1>
 </div>
 <form action="/updateprofile" method="post">
-    <div>
-        <label for="firstname">First Name</label>
-        <input type="text" id="firstname" name="firstname">
+    <div class="form-group">
+        <h5><label for="firstname">First Name</label></h5>
+        <input type="text" id="firstname" class="form-control" name="firstname">
     </div>
-    <div>
-        <label for="lastname">Last Name</label>
-        <input type="text" id="lastname" name="lastname">
+    <div class="form-group">
+        <h5><label for="lastname">Last Name</label></h5>
+        <input type="text" id="lastname" class="form-control" name="lastname">
     </div>
-    <div>
-        <label for="city">City</label>
-        <input type="text" id="city" name="city">
+    <div class="form-group">
+        <h5><label for="city">City</label></h5>
+        <input type="text" id="city" class="form-control" name="city">
     </div>
-    <input type="submit" value="submit">
+    <input id="submit-btn" type="submit" class="btn btn-primary btn-block">
 </form>
 </body>
 </html>
