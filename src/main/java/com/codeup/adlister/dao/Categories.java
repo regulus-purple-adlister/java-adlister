@@ -9,4 +9,6 @@ public interface Categories {
     Long insert(Category category);
 
     List<Category> getCatsForAdId(long id);
+
+    boolean removeAssociations(long id);
 }

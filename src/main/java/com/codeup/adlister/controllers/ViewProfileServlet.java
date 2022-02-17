@@ -21,8 +21,7 @@ public class ViewProfileServlet extends HttpServlet {
             response.sendRedirect("/login");
             return;
         }
-        // get all ads for this user
-        // this is another Java solution for something that should be done with a SQL query
+
         User user = (User) request.getSession().getAttribute("user");
         List<Ad> ads = DaoFactory.getAdsDao().getAdsForUser(user.getId());
         Profile profile = DaoFactory.getProfilesDao().getProfile(user.getId());

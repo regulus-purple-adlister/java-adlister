@@ -106,19 +106,20 @@ public class MySQLAdsDao implements Ads {
     }
 
     @Override
-    public boolean updateAd(long id, String column, String value) {
+    public boolean updateAd(Ad ad) {
         try {
-            String sql = "UPDATE ads SET ? = ? WHERE id = ?";
+            String sql = "UPDATE ads SET title = ?, description = ? WHERE id = ?";
             PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, column);
-            stmt.setString(2, value);
-            stmt.setLong(3, id);
+            stmt.setString(1, ad.getTitle());
+            stmt.setString(2, ad.getDescription());
+            stmt.setLong(3, ad.getId());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
             return true;
         } catch (SQLException e) {
-            System.out.println("Error updating ad of id " + id + " column " + column);
+            e.printStackTrace();
+            System.out.println("Error updating ad of id " + ad.getId());
         }
         return false;
     }

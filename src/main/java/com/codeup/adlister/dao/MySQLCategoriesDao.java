@@ -72,6 +72,20 @@ public class MySQLCategoriesDao implements Categories {
         return new ArrayList<>();
     }
 
+    @Override
+    public boolean removeAssociations(long id) {
+        try {
+            String sql = "DELETE FROM ad_cat WHERE ad_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private Category extractCategory(ResultSet rs) throws SQLException {
         return new Category(
                 rs.getLong("id"),
