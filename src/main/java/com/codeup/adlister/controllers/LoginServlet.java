@@ -39,21 +39,23 @@ public class LoginServlet extends HttpServlet {
 //            response.sendRedirect("/login");
 //            return;
 //        }
+//        boolean validAttempt = user != null || Password.check(password, user.getPassword());
 
-        boolean validAttempt = user != null || Password.check(password, user.getPassword());
-
-        if (validAttempt) {
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect("/profile");
-        } else {
-            request.setAttribute("username", username);
-            request.setAttribute("loginError", "The given username and password do not match any record in our database.");
-            try {
-                request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            } catch (ServletException e) {
-                e.printStackTrace();
+        if (user != null) { // if user exists...
+            if (Password.check(password, user.getPassword())) { // if passwords match...
+                // log user in!
+                request.getSession().setAttribute("user", user);
+                response.sendRedirect("/profile");
+                return;
             }
-
+        }
+        // if any of these failed, login was bad so give error to user
+        request.setAttribute("username", username);
+        request.setAttribute("loginError", "The given username and password do not match any record in our database.");
+        try {
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
         }
     }
 }
