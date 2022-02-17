@@ -24,13 +24,13 @@
                 <p class="text-danger"><c:out value="${emailError}" /></p>
             </div>
             <div class="form-group">
-                <small id="password-help" class="form-text text-muted">Password must be at least 6 characters long.</small>
                 <label for="password">Password</label>
+                <small id="password-help" class="form-text text-muted">Password must be at least 6 characters long.</small>
                 <input id="password" name="password" class="form-control" type="password">
             </div>
             <div class="form-group">
-                <small id="confirm-help" class="form-text text-muted">Passwords must match.</small>
                 <label for="confirm_password">Confirm Password</label>
+                <small id="confirm-help" class="form-text text-muted">Passwords must match.</small>
                 <input id="confirm_password" name="confirm_password" class="form-control" type="password">
                 <p class="text-danger"><c:out value="${passError}" /></p>
             </div>
@@ -40,6 +40,7 @@
     <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 <script>
     $(function () {
+        // regex match for strings that is only true when something goes like {stuff}@{stuff}.{stuff} ie email@email.com
         const validateEmail = (email) => {
             return email.match(
                 /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -48,28 +49,30 @@
 
         const usernameHelp = {
             el: $('#username-help').hide(),
+            tgt: $('#username'),
             ok: function () {
-                return this.el.val().length >= 4;
+                return this.tgt.val().length >= 4;
             }
         }
         const emailHelp =  {
             el: $('#email-help').hide(),
+            tgt: $('#email'),
             ok: function () {
-                return validateEmail(this.el.val());
+                return validateEmail(this.tgt.val());
             }
         }
         const passwordHelp = {
             el: $('#password-help').hide(),
+            tgt: $('#password'),
             ok: function () {
-                console.log("password ok method");
-                return this.el.val().length >= 6;
+                return this.tgt.val().length >= 6;
             }
         }
         const confirmHelp = {
             el: $('#confirm-help').hide(),
+            tgt: $('#confirm_password'),
             ok: function () {
-                console.log("confirm ok method");
-                return this.el.val() === passwordHelp.el.val();
+                return this.tgt.val() === passwordHelp.tgt.val();
             }
         }
         const submit = {
@@ -87,15 +90,15 @@
         }
         const inputs = [usernameHelp, emailHelp, passwordHelp, confirmHelp];
         inputs.forEach(input => {
-            console.log("Setting up inputs");
             input.el.hide();
-            input.el.change(function () {
-                console.log(input.el, "changed!")
+            input.tgt.on('input', function () {
                 submit.ok();
                 if (input.ok()) {
                     input.el.hide();
+                    input.tgt.css('border-color', '#ced4da');
                 } else {
                     input.el.show();
+                    input.tgt.css('border-color', '#ff0000');
                 }
             });
         });
