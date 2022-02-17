@@ -24,14 +24,23 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        User user = DaoFactory.getUsersDao().findByUsername(username);
 
-        if (user == null) {
-            response.sendRedirect("/login");
-            return;
+        User user = null;
+
+        // check for valid user by username or email
+        User userByName = DaoFactory.getUsersDao().findByUsername(username);
+        if (userByName != null) {
+            user = userByName;
+        } else {
+            user = DaoFactory.getUsersDao().findByEmail(username);
         }
 
-        boolean validAttempt = Password.check(password, user.getPassword());
+//        if (user == null) {
+//            response.sendRedirect("/login");
+//            return;
+//        }
+
+        boolean validAttempt = user != null || Password.check(password, user.getPassword());
 
         if (validAttempt) {
             request.getSession().setAttribute("user", user);
