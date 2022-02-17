@@ -23,11 +23,22 @@ public class MySQLProfilesDao implements Profiles {
     }
 
     public Long insert(Profile profile) {
-        String query = "INSERT INTO profile "
+        String query = "INSERT INTO profile(user_id) VALUES (?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, profile.getUserId());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return profile.getUserId();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("error inserting profile");
+        }
     }
 
     public Long update(Profile profile) {
-        String query = "UPDATE profile SET ? = ?, ? = ?, ? = ? WHERE user_id = ?";
+        String query = "UPDATE profile SET first_name = ?, last_name = ?, city = ? WHERE user_id = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, profile.getFirstName());
@@ -37,7 +48,7 @@ public class MySQLProfilesDao implements Profiles {
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
-            return rs.getLong(1);
+            return profile.getUserId();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("error updating profile");

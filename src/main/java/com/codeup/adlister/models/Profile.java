@@ -11,6 +11,10 @@ public class Profile {
     public Profile() {
     }
 
+    public Profile(long userId) {
+        this.userId = userId;
+    }
+
     public Profile(String firstName, String lastName, String city) {
         this.firstName = firstName;
         this.lastName = lastName;

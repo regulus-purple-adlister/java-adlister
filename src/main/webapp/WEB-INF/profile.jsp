@@ -19,6 +19,8 @@
                aria-controls="nav-about" aria-selected="true">About</a>
             <a class="nav-link" id="ads-tab" data-toggle="tab" href="#nav-ads" role="tab" aria-controls="nav-ads"
                aria-selected="false">Ads</a>
+            <a class="nav-link" id="create-tab" data-toggle="tab" href="#nav-create" role="tab" aria-controls="nav-create-ads"
+               aria-selected="false">Create</a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -41,11 +43,17 @@
 
         </div>
         <div class="tab-pane fade" id="nav-ads" role="tabpanel" aria-labelledby="ads-tab">
-
             <div class="container">
                 <h1>Here Are all the ads!</h1>
                 <jsp:include page="/WEB-INF/partials/ads-display.jsp" />
             </div>
+        </div>
+            <div class="tab-pane fade" id="nav-create" role="tabpanel" aria-labelledby="create-tab">
+                <div class="container">
+                    <jsp:include page="/WEB-INF/ads/create.jsp" />
+                </div>
+            </div>
+        </div>
     <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>
