@@ -2,6 +2,7 @@ package com.codeup.adlister.controllers;
 
 import com.codeup.adlister.dao.DaoFactory;
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.Profile;
 import com.codeup.adlister.models.User;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,9 @@ public class ViewProfileServlet extends HttpServlet {
         // this is another Java solution for something that should be done with a SQL query
         User user = (User) request.getSession().getAttribute("user");
         List<Ad> ads = DaoFactory.getAdsDao().getAdsForUser(user.getId());
+        Profile profile = DaoFactory.getProfilesDao().getProfile(user.getId());
         request.setAttribute("ads", ads);
+        request.setAttribute("profile", profile);
         request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
 }
