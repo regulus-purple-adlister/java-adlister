@@ -23,9 +23,8 @@
         </c:forEach>
     </ul>
 </div>
-<%-- this c:if test is commented out for sake of convenience of debugging the ad update/delete --%>
-<%-- when features are finished it should be reenabled so only the poster can change their ad --%>
-<%--<c:if test="${sessionScope.user.id == ad.userId}">--%>
+<%-- only show update/delete buttons if the ad was posted by the user viewing it --%>
+<c:if test="${sessionScope.user.id == ad.userId}">
     <div class="container">
         <form action="update_ad" method="get">
             <button type="submit" class="btn btn-primary" value="<c:out value="${ad.id}" />" name="update">Update listing</button>
@@ -34,7 +33,7 @@
             <button type="submit" class="btn btn-danger" value="<c:out value="${ad.id}" />" name="delete">Delete listing</button>
         </form>
     </div>
-<%--</c:if>--%>
+</c:if>
 <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
 </html>
