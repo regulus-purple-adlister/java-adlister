@@ -27,16 +27,16 @@
             <p class="card-text">Email: <c:out value="${sessionScope.user.email}"/></p>
             <div class="card-text">
                 <label>First Name</label>
-                <p><c:out value="${sessionScope.profile.firstname}" /> </p>
+                <p><c:out value="${profile.firstName}" /> </p>
             </div>
 
             <div class="card-text">
             <label>Last Name</label>
-            <p> <c:out value="${sessionScope.profile.lastname}" /> </p>
+            <p> <c:out value="${profile.lastName}" /> </p>
         </div>
             <div class="card-text">
                 <label>City</label>
-                <p> <c:out value="${sessionScope.profile.city}" /> </p>
+                <p> <c:out value="${profile.city}" /> </p>
             </div>
 
         </div>

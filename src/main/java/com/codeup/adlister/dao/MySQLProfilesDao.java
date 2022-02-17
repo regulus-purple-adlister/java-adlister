@@ -42,8 +42,8 @@ public class MySQLProfilesDao implements Profiles {
     private Profile extractProfile(ResultSet rs) throws SQLException {
         return new Profile(
                 rs.getLong("id"),
-                rs.getString("firstname"),
-                rs.getString("lastname"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
                 rs.getString("city")
         );
     }
@@ -56,8 +56,9 @@ public class MySQLProfilesDao implements Profiles {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            profile.extractProfile(rs);
+            profile = extractProfile(rs);
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("error" + e);
         }
         return profile;

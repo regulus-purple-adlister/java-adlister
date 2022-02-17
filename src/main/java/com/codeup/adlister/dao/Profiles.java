@@ -7,5 +7,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 public interface Profiles {
     Long insert(Profile profile) throws SQLIntegrityConstraintViolationException;
+    Profile getProfile(long id);
 
 }
