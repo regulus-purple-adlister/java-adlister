@@ -40,7 +40,12 @@ public class LoginServlet extends HttpServlet {
             if (Password.check(password, user.getPassword())) { // if passwords match...
                 // log user in!
                 request.getSession().setAttribute("user", user);
-                response.sendRedirect(request.getParameter("redirect"));
+
+                String uri = request.getParameter("redirect");
+                if (uri.isEmpty() || uri.equals("/")) {
+                    uri = "/ads";
+                }
+                response.sendRedirect(uri);
                 return;
             }
         }
