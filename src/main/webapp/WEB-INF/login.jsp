@@ -22,6 +22,7 @@
             <p class="text-danger"><c:out value="${loginError}" /></p>
             <input type="submit" class="btn btn-primary btn-block" value="Log In">
         </form>
+        <small>Don't have an account? <a href="/register">Register here!</a></small>
     </div>
     <jsp:include page="/WEB-INF/partials/bootstrap-scripts.jsp" />
 </body>
