@@ -80,5 +80,20 @@ public class MySQLProfilesDao implements Profiles {
         return profile;
     }
 
+    public Long delete(Profile profile) {
+        try {
+            String profileQuery = "DELETE profile, users FROM users LEFT JOIN profile on profile.user_id = users.id WHERE user_id = ?";
+//            String userQuery = "DELETE FROM users WHERE id = ?";
+            PreparedStatement stmt = connection.prepareStatement(profileQuery, Statement.RETURN_GENERATED_KEYS);
+//            PreparedStatement stmt2 = connection.prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
+            stmt.setLong(1, profile.getUserId());
+            stmt.executeUpdate();
+//            stmt2.setLong(1, id);
+            return profile.getUserId();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting profile #" + profile.getUserId(), e);
+        }
+    }
+
 
 }
