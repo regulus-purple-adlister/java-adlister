@@ -25,9 +25,9 @@
             <a class="nav-link" id="create-tab" data-toggle="tab" href="#nav-create" role="tab"
                aria-controls="nav-create-ads"
                aria-selected="false">Create</a>
-            <a class="nav-link" id="update-tab" data-toggle="tab" href="#nav-update" role="tab"
-               aria-controls="nav-update"
-               aria-selected="false">Update Profile</a>
+            <a class="nav-link" id="account-tab" data-toggle="tab" href="#nav-account" role="tab"
+               aria-controls="nav-account"
+               aria-selected="false">Account Management</a>
         </div>
     </nav>
     <div class="tab-content mt-3 mb-3" id="nav-tabContent">
@@ -58,12 +58,21 @@
         </div>
         <div class="tab-pane fade" id="nav-create" role="tabpanel" aria-labelledby="create-tab">
             <div class="container">
-                <jsp:include page="/WEB-INF/ads/create.jsp"/>
+                <jsp:include page="/WEB-INF/partials/ad-form.jsp">
+                    <jsp:param name="action" value="/ads/create" />
+                </jsp:include>
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-update" role="tabpanel" aria-labelledby="update-tab">
+        <div class="tab-pane fade" id="nav-account" role="tabpanel" aria-labelledby="account-tab">
             <div class="container">
                 <jsp:include page="/WEB-INF/updateprofile.jsp"/>
+            </div>
+            <div class="container mt-5">
+                <form action="/account_delete" method="post">
+                    <h5><label>Delete Account</label></h5>
+                    <input type="hidden" name="user_id" value="${users.user_id}">
+                    <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+                </form>
             </div>
         </div>
     </div>
