@@ -11,6 +11,7 @@
     <div class="container">
         <h1>Please Log In</h1>
         <form action="/login" method="POST">
+            <input name="redirect" type="hidden" value="${caller}">
             <div class="form-group">
                 <label for="username">Username or Email</label>
                 <input id="username" name="username" class="form-control" type="text" value="${username}">

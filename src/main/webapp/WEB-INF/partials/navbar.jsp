@@ -15,14 +15,14 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav ml-2 mr-2 mt-2 mt-lg-0">
-            <c:if test="${user == null}">
-                <li class="mr-2 mb-1"><a href="/login">Login</a></li>
+            <c:if test="${sessionScope.user == null}">
+                <li class="mr-2 mb-1"><a href="/login?from=${caller}">Login</a></li>
                 <li class="mr-2 mb-1"><a href="/register">Register</a></li>
             </c:if>
-            <c:if test="${user != null}">
+            <c:if test="${sessionScope.user != null}">
                 <li class="mr-2 mb-1"><a href="/profile">Profile</a></li>
                 <li class="mr-2 mb-1"><a href="/editPassword">Edit Password</a></li>
-                <li class="mr-2 mb-1"><a href="/logout">Logout</a></li>
+                <li class="mr-2 mb-1"><a href="/logout?from=${caller}">Logout</a></li>
             </c:if>
         </ul>
     </div>

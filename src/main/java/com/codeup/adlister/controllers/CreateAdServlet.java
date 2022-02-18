@@ -18,6 +18,7 @@ import java.util.List;
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("caller", request.getRequestURI());
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/login");
             return;

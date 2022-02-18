@@ -17,6 +17,7 @@ public class SearchAdsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String query = request.getParameter("search");
         String type = request.getParameter("type");
+        request.setAttribute("caller", request.getRequestURI());
         if (query != null && type != null) {
             List<Ad> adsResult = DaoFactory.getAdsDao().searchAds(query, type);
             request.setAttribute("ads", adsResult);

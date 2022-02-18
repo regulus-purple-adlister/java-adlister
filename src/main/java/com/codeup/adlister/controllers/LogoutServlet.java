@@ -11,6 +11,13 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().removeAttribute("user");
         request.getSession().invalidate();
-        response.sendRedirect("/login");
+
+        // intentional redirect
+        String uri = request.getParameter("from");
+        if (request.getParameter("from").isEmpty()) { // if page is restricted, redirect to ads index
+            uri = "/ads";
+        }
+
+        response.sendRedirect(uri);
     }
 }
