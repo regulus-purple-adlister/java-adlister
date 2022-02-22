@@ -18,8 +18,9 @@ import java.util.List;
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("caller", request.getRequestURI());
         if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/login");
+            response.sendRedirect("/login?from=/ads/create");
             return;
         }
         request.getRequestDispatcher("/WEB-INF/ads/create.jsp")
@@ -70,7 +71,7 @@ public class CreateAdServlet extends HttpServlet {
                 long catId = DaoFactory.getCategoriesDao().insert(cat);
                 DaoFactory.getAdCatDao().insert(catId, adId);
             }
-            response.sendRedirect("/ads");
+            response.sendRedirect("/ads/" + adId);
         }
     }
 }

@@ -26,6 +26,8 @@ public class AdPageServlet extends HttpServlet {
             request.setAttribute("ad", ad);
             request.setAttribute("user", user);
             request.setAttribute("categories", categories);
+
+            request.setAttribute("caller", request.getRequestURI());
             request.getRequestDispatcher("/WEB-INF/ads/ad.jsp").forward(request, response);
         } catch (NumberFormatException | NullPointerException e) {
             // if no matches are found, redirect to the ads index
